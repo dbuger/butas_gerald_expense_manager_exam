@@ -1,0 +1,121 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Expenses</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">Expense Management</li>
+                    <li class="breadcrumb-item active">Expenses</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row" v-if="alert.show">
+            <div class="col">
+                <div class="alert alert-dismissible" :class="alert.type">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" @click="alert.show = false">×</button>
+                    <b><i class="icon fas" :class="alert.icon"></i> {{alert.title}}</b>
+                    {{alert.message}}
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-lg-2 col-md-2 col-xl-2 col-sm-12">
+                <button type="button" v-if="can_create" style="max-width: 150px;" @click="toggleModal(true)"
+                        class="btn btn-block btn-primary btn-flat">
+                    <i class="fa fa-plus"/>
+                    Add Expenses
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered table-hover bg-white">
+                    <thead>
+                    <tr>
+                        <th>Expense Category</th>
+                        <th class="text-right">Amount</th>
+                        <th style="width: 150px">Entry At</th>
+                        <th style="width: 150px">Created At</th>
+                        <th>Created By</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <template v-if="has_datasets">
+                        <tr v-for="(item,index) in datasets" :key="'tr-role-'+index" @click="edit(item)">
+                            <td>{{ item.category.name }}</td>
+                            <td class="text-right">{{ item.amount }}</td>
+                            <td>{{ item.entry_at_f }}</td>
+                            <td>{{ item.created_at_f }}</td>
+                            <td>{{ item.creator.name }}</td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr>
+                            <td colspan="5">No information to display.</td>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div :class="{'modal fade center':true,'show d-block':modal_shown}" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" @submit.prevent="save">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ modal_title }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Expense Category</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" v-model="form_data.expense_category_id" required>
+                                    <option disabled value="">--Select Expense Category--</option>
+                                    <option v-for="(item,index) in categories" :value="item.id">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Amount</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="1" v-model="form_data.amount" maxlength="150" required
+                                       class="form-control" placeholder="Required*">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Entry Date</label>
+                            <div class="col-sm-8">
+                                <input type="date" v-model="form_data.entry_at" required
+                                       class="form-control" placeholder="Required*">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" v-if="can_delete" @click="deleteRecord(form_data.id)" class="btn btn-danger">Delete</button>
+                        <div class="ml-auto">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                                    @click="toggleModal(true)">Cancel
+                            </button>
+                            <button type="submit" v-if="can_save" class="btn btn-success ml-1">{{ save_button_title }}</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+</section>

@@ -1,0 +1,93 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <router-link to="/" class="brand-link">
+        <img
+                src="../../../assets/img/logo.png"
+                alt="AdminLTE Logo"
+                class="brand-image img-circle elevation-3"
+                style="opacity: 0.8"
+        />
+        <span class="brand-text font-weight-light">{{ current_user.name }}</span>
+    </router-link>
+
+    <div class="sidebar">
+        <nav class="pt-3">
+            <ul
+                class="nav nav-pills nav-sidebar flex-column"
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false"
+            >
+                <li class="nav-item">
+                    <router-link
+                            to="/"
+                            class="nav-link"
+                            exact
+                            exact-active-class="active"
+                    >
+                        Dashboard
+                    </router-link>
+                </li>
+
+                <template v-if="canManageUser">
+                    <li class="nav-header text-md pl-3">User Management</li>
+                    <li class="nav-item">
+                        <router-link
+                                to="/user_management/roles"
+                                class="nav-link"
+                                exact
+                                exact-active-class="active"
+                        >
+
+                            <p class="ml-2">Roles</p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link
+                                to="/user_management/users"
+                                class="nav-link"
+                                exact
+                                exact-active-class="active"
+                        >
+
+                            <p class="ml-2">Users</p>
+                        </router-link>
+                    </li>
+                </template>
+                <li class="nav-item" v-if="canChangePassword">
+                    <router-link
+                            to="/change_password"
+                            class="nav-link"
+                            exact
+                            exact-active-class="active"
+                    >
+                        Change Password
+                    </router-link>
+                </li>
+                <li class="nav-header text-md pl-3">Expense Management</li>
+                <li class="nav-item" v-if="canManageExpenseCategories">
+                    <router-link
+                            to="/expense_management/expense_categories"
+                            class="nav-link"
+                            exact
+                            exact-active-class="active"
+                    >
+
+                        <p class="ml-2">Expense Categories</p>
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link
+                            to="/expense_management/expenses"
+                            class="nav-link"
+                            exact
+                            exact-active-class="active"
+                    >
+
+                        <p class="ml-2">Expenses</p>
+                    </router-link>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+</aside>
