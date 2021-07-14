@@ -28,7 +28,7 @@ class ExpenseController extends Controller
             ->when($this->request->user()->hasRole('Administrator') == false,function ($query){
                 return $query->where('expenses.created_by','=',$this->request->user()->id);
             })
-            ->groupBy('expenses.expense_category_id,expense_categories.name as category_name,expense_categories.hex_color as color')
+            ->groupBy('expenses.expense_category_id,expense_categories.name,expense_categories.hex_color')
             ->get();
         return response($result);
     }
