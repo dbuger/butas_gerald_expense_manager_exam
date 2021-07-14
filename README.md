@@ -19,7 +19,7 @@
 - Make sure you have MySql or MariaDb installed on your PC or Laptop.
 - Create database: 
     - For example: `expense_manager_db`
-    - Recommended Collation: `utf8_unicode_ci`
+    - Recommended Collation: `utf8mb4_unicode_ci`
 
 ### Configuring the service_provider: 
 1. Open `service_provider` directory in the terminal
